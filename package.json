@@ -1,0 +1,40 @@
+{
+  "name": "avif-preview",
+  "displayName": "Avif Preview",
+  "description": "Preview AVIF images directly in Visual Studio Code.",
+  "version": "1.0.0",
+  "publisher": "ovcharovcoder",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "icon": "images/icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ovcharovcoder/avif-preview.git"
+  },
+  "activationEvents": [
+    "onCommand:avifpreview.open"
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "avifpreview.open",
+        "title": "Open AVIF Preview"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "avifpreview.open",
+          "when": "resourceExtname == .avif",
+          "group": "navigation"
+        }
+      ]
+    }
+  }
+}
