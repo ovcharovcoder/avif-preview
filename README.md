@@ -28,7 +28,7 @@
 
 To preview an AVIF file:
 
-- Right-click on a .avif file in Explorer and select Open Avif Preview.
+- Right-click on a .avif file in Explorer and select `Open Avif Preview`.
 - You can select a single file or multiple files — multiple files will be added to the gallery (up to 3 images).
 
 ---
@@ -77,3 +77,4 @@ If you enjoy DevFoundry Umber, consider supporting the author:
 ## 🪪 License
 
 Released under the [MIT License](https://raw.githubusercontent.com/ovcharovcoder/avif-preview/main/LICENSE.md)
+
