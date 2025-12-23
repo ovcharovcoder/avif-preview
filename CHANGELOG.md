@@ -3,6 +3,30 @@
 All notable changes to the Avif Preview VS Code extension will be documented in this file.
 <br>
 
+## [1.0.2] - 2025-12-23
+### Added
+
+* Gallery support — preview multiple AVIF images from a folder and switch between them.
+* Toolbar — quick controls for zoom in/out, reset, fit to screen, and close.
+* Magnifying glass cursor — indicates zoom availability.
+* Improved zooming — scales towards cursor position for precise inspection.
+* Drag-to-pan support — move images freely within the preview when zoomed.
+* Metadata panel — shows image dimensions, scale, and file size.
+* Automatic image refresh — updates images when files change (FileSystemWatcher + cache-busting).
+* Smooth transitions and animations for zooming and panning.
+* Explorer integration — open preview via context menu or keyboard shortcut.
+* Progress indicator — shows loading state of AVIF images.
+* VS Code theme adaptation — background and metadata colors match editor theme.
+
+### Changed
+
+* Switched to using a dedicated Webview panel for AVIF previews with enhanced interactivity.
+* Improved stability and performance for multiple-image previews.
+
+### Fixed
+* Resolved previous issues with image positioning and panning in multi-image previews.
+* Corrected cursor behavior to reflect zoom availability.
+
 ## [1.0.1] - 2025-12-23
 
 ### Changed
