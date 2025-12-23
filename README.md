@@ -61,4 +61,6 @@ If you enjoy Avif Preview, consider supporting the author:
 
 ## 🪪 License
 
-Released under the [MIT License](https://raw.githubusercontent.com/ovcharovcoder/avif-preview/main/LICENSE)
+Released under the [MIT License](https://raw.githubusercontent.com/ovcharovcoder/avif-preview/main/LICENSE.md)
+
+
