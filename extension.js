@@ -1,169 +1,159 @@
 const vscode = require('vscode');
 const path = require('path');
+const fs = require('fs');
 
 function activate(context) {
-  const openDisposable = vscode.commands.registerCommand(
+  const disposable = vscode.commands.registerCommand(
     'avifpreview.open',
     async uri => {
       if (!uri) {
-        vscode.window.showErrorMessage('No file selected');
+        vscode.window.showErrorMessage('No resource selected');
         return;
       }
 
+      let targetUri = uri;
+
+      // Determine whether it is a file or a folder
+      let stat;
+      try {
+        stat = await vscode.workspace.fs.stat(uri);
+      } catch {
+        vscode.window.showErrorMessage('Cannot access resource');
+        return;
+      }
+
+      // If the folder is AVIF, we are looking for it.
+      if (stat.type === vscode.FileType.Directory) {
+        const files = await vscode.workspace.fs.readDirectory(uri);
+        const avifs = files
+          .filter(
+            ([name, type]) =>
+              type === vscode.FileType.File &&
+              name.toLowerCase().endsWith('.avif')
+          )
+          .map(([name]) => vscode.Uri.joinPath(uri, name));
+
+        if (!avifs.length) {
+          vscode.window.showInformationMessage('No AVIF files found in folder');
+          return;
+        }
+
+        if (avifs.length > 1) {
+          const pick = await vscode.window.showQuickPick(
+            avifs.map(u => ({
+              label: path.basename(u.fsPath),
+              uri: u,
+            })),
+            { placeHolder: 'Select AVIF image to preview' }
+          );
+          if (!pick) return;
+          targetUri = pick.uri;
+        } else {
+          targetUri = avifs[0];
+        }
+      }
+
+      // Creating a WebView
       const panel = vscode.window.createWebviewPanel(
         'avifpreview',
-        `AVIF Preview: ${path.basename(uri.fsPath)}`,
-        vscode.ViewColumn.One,
+        `AVIF Preview — ${path.basename(targetUri.fsPath)}`,
+        vscode.ViewColumn.Beside,
         {
           enableScripts: true,
-          localResourceRoots: [vscode.Uri.file(path.dirname(uri.fsPath))],
+          localResourceRoots: [
+            vscode.Uri.file(context.extensionPath),
+            vscode.Uri.file(path.dirname(targetUri.fsPath)),
+          ],
         }
       );
 
-      let imgSrc = panel.webview.asWebviewUri(uri);
-      const nonce = getNonce();
+      // File metadata
+      const fileStat = await fs.promises.stat(targetUri.fsPath);
+      const fileSize = fileStat.size;
 
-      panel.webview.html = `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta http-equiv="Content-Security-Policy"
-      content="default-src 'none'; img-src ${panel.webview.cspSource} blob: data:; style-src ${panel.webview.cspSource} 'unsafe-inline'; script-src 'nonce-${nonce}';">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AVIF Preview</title>
-<style>
-html, body {
-    margin:0; padding:0;
-    width:100%; height:100%;
-    display:flex; justify-content:center; align-items:center;
-    background: var(--vscode-editor-background);
-    overflow:hidden;
-    font-family: var(--vscode-font-family);
-}
-#avifImage {
-    max-width:100%; max-height:100%;
-    object-fit: contain;
-    cursor: zoom-in;
-    transition: transform 0.2s ease;
-}
-#status {
-    position: absolute;
-    top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 6px 12px;
-    border-radius: 4px;
-    background: rgba(0,0,0,0.3);
-    color: white;
-    font-size: 14px;
-    font-weight: bold;
-}
-</style>
-</head>
-<body>
-<img id="avifImage" src="${imgSrc}" alt="AVIF preview">
-<div id="status">Waiting for image to load...</div>
-<script nonce="${nonce}">
-const vscodeApi = acquireVsCodeApi();
-const img = document.getElementById('avifImage');
-const status = document.getElementById('status');
+      // HTML from index.html
+      panel.webview.html = getWebviewHtml(
+        context,
+        panel.webview,
+        targetUri,
+        fileSize
+      );
 
-let scale = 1;
-let isPanning = false;
-let startX = 0, startY = 0;
-let translateX = 0, translateY = 0;
+      // Message from WebView
+      panel.webview.onDidReceiveMessage(message => {
+        if (message.command === 'close') {
+          panel.dispose();
+        }
+      });
 
-function updateTransform(){
-    img.style.transform = \`translate(\${translateX}px,\${translateY}px) scale(\${scale})\`;
-}
+      // Watcher for live refresh
+      const folderUri = vscode.Uri.file(path.dirname(targetUri.fsPath));
+      const watcher = vscode.workspace.createFileSystemWatcher(
+        new vscode.RelativePattern(folderUri, path.basename(targetUri.fsPath))
+      );
 
-// Image load status
-img.onload = () => {
-    status.textContent = 'Image loaded ✅';
-    status.style.background = 'rgba(0,128,0,0.5)';
-};
-img.onerror = (e) => {
-    status.textContent = 'Load error ❌';
-    status.style.background = 'rgba(255,0,0,0.5)';
-    console.error('Image load error:', e);
-};
-
-// Zoom
-img.addEventListener('wheel', e => {
-    e.preventDefault();
-    const delta = e.deltaY > 0 ? 0.9 : 1.1;
-    scale = Math.min(Math.max(scale * delta, 0.5), 10);
-    updateTransform();
-});
-
-// Pan
-img.addEventListener('mousedown', e => {
-    if(scale <= 1) return;
-    isPanning = true;
-    startX = e.clientX - translateX;
-    startY = e.clientY - translateY;
-    img.style.cursor = 'grabbing';
-});
-document.addEventListener('mousemove', e => {
-    if(!isPanning) return;
-    translateX = e.clientX - startX;
-    translateY = e.clientY - startY;
-    updateTransform();
-});
-document.addEventListener('mouseup', () => {
-    isPanning = false;
-    img.style.cursor = scale > 1 ? 'grab' : 'zoom-in';
-});
-
-// Click to zoom
-img.addEventListener('click', () => {
-    if(scale === 1){
-        scale = 2;
-    } else {
-        scale = 1;
-        translateX = translateY = 0;
-    }
-    updateTransform();
-});
-
-// Listen to messages from extension
-window.addEventListener('message', event => {
-    const message = event.data;
-    if(message.command === 'refresh'){
-        // Update image src with cache-busting query param
-        img.src = '${imgSrc}?t=' + new Date().getTime();
-    }
-});
-</script>
-</body>
-</html>
-`;
-
-      // Watch file changes
-      const watcher = vscode.workspace.createFileSystemWatcher(uri.fsPath);
       watcher.onDidChange(() => {
         panel.webview.postMessage({ command: 'refresh' });
       });
 
-      panel.onDidDispose(() => {
-        watcher.dispose();
-      });
+      panel.onDidDispose(() => watcher.dispose());
     }
   );
 
-  context.subscriptions.push(openDisposable);
+  context.subscriptions.push(disposable);
+}
+
+/**
+ * Loads index.html and inserts placeholders
+ */
+function getWebviewHtml(context, webview, imageUri, fileSize) {
+  const nonce = getNonce();
+
+  const templatePath = vscode.Uri.joinPath(
+    context.extensionUri,
+    'webview',
+    'index.html'
+  );
+
+  let html = fs.readFileSync(templatePath.fsPath, 'utf8');
+
+  const imgSrc = webview.asWebviewUri(imageUri);
+  const scriptUri = webview.asWebviewUri(
+    vscode.Uri.joinPath(context.extensionUri, 'webview', 'viewer.js')
+  );
+  const styleUri = webview.asWebviewUri(
+    vscode.Uri.joinPath(context.extensionUri, 'webview', 'style.css')
+  );
+
+  const replacements = {
+    cspSource: webview.cspSource,
+    nonce,
+    imgSrc,
+    scriptUri,
+    styleUri,
+    fileSize,
+  };
+
+  for (const [key, value] of Object.entries(replacements)) {
+    html = html.replaceAll(`{{${key}}}`, String(value));
+  }
+
+  return html;
 }
 
 function getNonce() {
   let text = '';
-  const possible =
+  const chars =
     'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  for (let i = 0; i < 32; i++)
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
+  for (let i = 0; i < 32; i++) {
+    text += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
   return text;
 }
 
 function deactivate() {}
 
-module.exports = { activate, deactivate };
+module.exports = {
+  activate,
+  deactivate,
+};
