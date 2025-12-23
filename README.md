@@ -2,7 +2,7 @@
 
 [![VS Code Marketplace](https://img.shields.io/visual-studio-marketplace/v/ovcharovcoder.avif-preview?color=blue)](https://marketplace.visualstudio.com/items?itemName=ovcharovcoder.avif-preview)
 [![GitHub Stars](https://img.shields.io/github/stars/ovcharovcoder/avif-preview?color=yellow)](https://github.com/ovcharovcoder/avif-preview)
-[![License](https://img.shields.io/github/license/ovcharovcoder/avif-preview?color=green)](https://raw.githubusercontent.com/ovcharovcoder/avif-preview/main/LICENSE)
+[![License](https://img.shields.io/github/license/ovcharovcoder/avif-preview?color=green)](https://raw.githubusercontent.com/ovcharovcoder/avif-preview/main/LICENSE.md)
 
 ![Avif Preview Banner](https://raw.githubusercontent.com/ovcharovcoder/avif-preview/main/images/avif-preview-banner.png)
 
@@ -62,5 +62,6 @@ If you enjoy Avif Preview, consider supporting the author:
 ## 🪪 License
 
 Released under the [MIT License](https://raw.githubusercontent.com/ovcharovcoder/avif-preview/main/LICENSE.md)
+
 
 
