@@ -21,11 +21,18 @@
 
 ---
 
-## 🛠 Installation
+## 🛠 Installation and Usage
 
-1. Open **VS Code → Extensions** (`Ctrl+Shift+X` / `Cmd+Shift+X`).
-2. Search for Avif Preview and click Install.
-3. Open any file with the .avif extension — it will automatically open in the new preview editor.
+1. Open **VS Code → Extensions** (`Ctrl+Shift+X`).
+2. Search for **Avif Preview** and click **Install**.
+
+To preview an AVIF image:
+- Right-click on any file with the `.avif` extension in the Explorer panel.
+- Select **Open AVIF Preview** from the context menu.
+
+This will open the image in a dedicated Webview panel with support for zoom, panning, and automatic refresh on file changes.
+
+Note: VS Code does not yet have native built-in preview for AVIF files when double-clicking (as of December 2025). This extension provides a reliable alternative via the context menu.
 
 ---
 
@@ -59,3 +66,4 @@ If you enjoy DevFoundry Umber, consider supporting the author:
 ## 🪪 License
 
 Released under the [MIT License](https://raw.githubusercontent.com/ovcharovcoder/avif-preview/main/LICENSE)
+
