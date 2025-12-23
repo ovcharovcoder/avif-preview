@@ -1,21 +1,31 @@
 {
   "name": "avif-preview",
-  "displayName": "Avif Preview",
-  "description": "Preview AVIF images directly in Visual Studio Code.",
-  "version": "1.0.0",
+  "displayName": "AVIF Preview",
+  "description": "Preview AVIF images in VS Code with gallery, zoom, pan, and metadata",
+  "version": "1.0.2",
   "publisher": "ovcharovcoder",
   "license": "MIT",
   "engines": {
     "vscode": "^1.85.0"
   },
   "categories": [
-    "Other"
+    "Visualization"
+  ],
+  "keywords": [
+    "avif",
+    "image",
+    "preview",
+    "viewer"
   ],
   "icon": "images/icon.png",
   "repository": {
     "type": "git",
     "url": "https://github.com/ovcharovcoder/avif-preview.git"
   },
+  "bugs": {
+    "url": "https://github.com/ovcharovcoder/avif-preview/issues"
+  },
+  "homepage": "https://github.com/ovcharovcoder/avif-preview#readme",
   "activationEvents": [
     "onCommand:avifpreview.open"
   ],
@@ -31,10 +41,18 @@
       "explorer/context": [
         {
           "command": "avifpreview.open",
-          "when": "resourceExtname == .avif",
+          "when": "explorerResourceIsFolder || resourceFilename =~ /\\.avif$/i",
           "group": "navigation"
         }
       ]
-    }
+    },
+    "keybindings": [
+      {
+        "command": "avifpreview.open",
+        "key": "ctrl+alt+v",
+        "mac": "cmd+alt+v",
+        "when": "explorerResourceIsFolder || resourceFilename =~ /\\.avif$/i"
+      }
+    ]
   }
 }
