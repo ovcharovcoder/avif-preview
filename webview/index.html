@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none';
+             img-src {{cspSource}} blob:;
+             style-src {{cspSource}};
+             script-src 'nonce-{{nonce}}';"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AVIF Preview</title>
+    <link rel="stylesheet" href="{{styleUri}}" />
+  </head>
+  <body>
+    <div id="container">
+      <img id="image" src="{{imgSrc}}" />
+      <div id="toolbar">
+        <button data-action="zoomIn">+</button>
+        <button data-action="zoomOut">−</button>
+        <button data-action="reset">Reset</button>
+        <button data-action="fit">Fit</button>
+        <button data-action="close">×</button>
+      </div>
+      <div id="meta"></div>
+      <div id="loader"></div>
+    </div>
+
+    <script nonce="{{nonce}}">
+      window.__AVIF_DATA__ = {
+        fileSize: {{fileSize}}
+      };
+    </script>
+
+    <script nonce="{{nonce}}" src="{{scriptUri}}"></script>
+  </body>
+</html>

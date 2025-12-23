@@ -1,0 +1,105 @@
+/* === Reset and basic styles === */
+html,
+body {
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  background: var(--vscode-editor-background);
+  font-family: var(--vscode-font-family);
+  user-select: none;
+  overflow: hidden;
+}
+
+/* === Image container === */
+#container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: zoom-in;
+}
+
+/* === Image === */
+img {
+  max-width: none;
+  max-height: none;
+  transform-origin: center center;
+  transition: transform 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  cursor: inherit; /* змінюється JS залежно від scale та drag */
+}
+
+/* === Toolbar === */
+#toolbar {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  gap: 6px;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 6px 8px;
+  border-radius: 6px;
+  z-index: 10;
+}
+
+#toolbar button {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+
+#toolbar button:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+/* === Metadata === */
+#meta {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  font-size: 12px;
+  background: rgba(0, 0, 0, 0.45);
+  padding: 4px 8px;
+  border-radius: 4px;
+  z-index: 10;
+  white-space: nowrap;
+}
+
+/* === Loader (smooth spinner)=== */
+#loader {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 5;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+#loader::after {
+  content: '';
+  width: 40px;
+  height: 40px;
+  border: 5px solid rgba(255, 255, 255, 0.3);
+  border-top: 5px solid var(--vscode-editor-foreground);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
