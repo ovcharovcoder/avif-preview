@@ -2,7 +2,7 @@
   "name": "avif-preview",
   "displayName": "AVIF Preview",
   "description": "Preview AVIF images in VS Code with gallery, zoom, pan, and metadata",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "publisher": "ovcharovcoder",
   "license": "MIT",
   "engines": {
@@ -56,3 +56,4 @@
     ]
   }
 }
+
