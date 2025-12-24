@@ -24,12 +24,12 @@
 ## 🛠 Installation & Usage
 
 1. Open **VS Code → Extensions** (`Ctrl+Shift+X` / `Cmd+Shift+X`).
-2. Search for Avif Preview and click Install.
+2. Search for **Avif Preview** and click Install.
 
 To preview an AVIF file:
 
-- Right-click on a .avif file in Explorer and select `Open Avif Preview`.
-- You can select a single file or multiple files — multiple files will be added to the gallery (up to 3 images).
+- Right-click an .avif file in the Explorer and select **Open AVIF Preview**.
+- You can select a single file, multiple files, or a folder containing multiple files — all selected images will be added to the gallery.
 
 ---
 
@@ -77,4 +77,3 @@ If you enjoy DevFoundry Umber, consider supporting the author:
 ## 🪪 License
 
 Released under the [MIT License](https://raw.githubusercontent.com/ovcharovcoder/avif-preview/main/LICENSE.md)
-
