@@ -3,6 +3,11 @@
 All notable changes to the Avif Preview VS Code extension will be documented in this file.
 <br>
 
+## [1.0.5] - 2025-12-24
+### Added
+- Keyboard shortcuts.
+- Users can now configure their own shortcut for opening AVIF files.
+
 ## [1.0.4] - 2025-12-24
 ### Changed
 - Disabled the loading spinner icon in the preview panel to simplify the interface.
