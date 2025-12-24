@@ -6,14 +6,24 @@ function activate(context) {
   const disposable = vscode.commands.registerCommand(
     'avifpreview.open',
     async uri => {
+      // If the uri is not passed (e.g. via hotkeys)
       if (!uri) {
-        vscode.window.showErrorMessage('No resource selected');
-        return;
+        const files = await vscode.window.showOpenDialog({
+          canSelectFiles: true,
+          canSelectFolders: false,
+          filters: { 'AVIF Images': ['avif'] },
+          openLabel: 'Open AVIF Preview',
+        });
+        if (!files || files.length === 0) {
+          vscode.window.showErrorMessage('No AVIF file selected');
+          return;
+        }
+        uri = files[0];
       }
 
       let targetUri = uri;
 
-      // Determine whether it is a file or a folder
+      // Checking if a resource exists
       let stat;
       try {
         stat = await vscode.workspace.fs.stat(uri);
@@ -22,7 +32,7 @@ function activate(context) {
         return;
       }
 
-      // If the folder is AVIF, we are looking for it.
+      // If it is a folder, select the AVIF file from the folder
       if (stat.type === vscode.FileType.Directory) {
         const files = await vscode.workspace.fs.readDirectory(uri);
         const avifs = files
@@ -71,7 +81,7 @@ function activate(context) {
       const fileStat = await fs.promises.stat(targetUri.fsPath);
       const fileSize = fileStat.size;
 
-      // HTML from index.html
+      // Loading HTML
       panel.webview.html = getWebviewHtml(
         context,
         panel.webview,
@@ -86,7 +96,7 @@ function activate(context) {
         }
       });
 
-      // Watcher for live refresh
+      // Watcher for updates
       const folderUri = vscode.Uri.file(path.dirname(targetUri.fsPath));
       const watcher = vscode.workspace.createFileSystemWatcher(
         new vscode.RelativePattern(folderUri, path.basename(targetUri.fsPath))
@@ -104,7 +114,7 @@ function activate(context) {
 }
 
 /**
- * Loads index.html and inserts placeholders
+ * Loads index.html and inserts URI and metadata
  */
 function getWebviewHtml(context, webview, imageUri, fileSize) {
   const nonce = getNonce();
@@ -114,7 +124,6 @@ function getWebviewHtml(context, webview, imageUri, fileSize) {
     'webview',
     'index.html'
   );
-
   let html = fs.readFileSync(templatePath.fsPath, 'utf8');
 
   const imgSrc = webview.asWebviewUri(imageUri);
