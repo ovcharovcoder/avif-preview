@@ -2,7 +2,6 @@ const vscode = acquireVsCodeApi();
 
 const img = document.getElementById('image');
 const meta = document.getElementById('meta');
-const loader = document.getElementById('loader');
 const container = document.getElementById('container');
 const toolbar = document.getElementById('toolbar');
 
@@ -47,15 +46,14 @@ function render() {
   limitPan();
   img.style.transform = `translate(${x}px, ${y}px) scale(${scale})`;
 
-  meta.textContent = `Scale: ${scale.toFixed(2)}x • ${img.naturalWidth}×${img.naturalHeight} • ${formatSize(
-    window.__AVIF_DATA__.fileSize
-  )}`;
+  meta.textContent = `Scale: ${scale.toFixed(2)}x • ${img.naturalWidth}×${
+    img.naturalHeight
+  } • ${formatSize(window.__AVIF_DATA__.fileSize)}`;
 
   updateCursor();
 }
 
 img.onload = () => {
-  loader.style.display = 'none';
   render();
 };
 
@@ -143,7 +141,6 @@ toolbar.addEventListener('click', e => {
 window.addEventListener('message', e => {
   if (e.data.command === 'refresh') {
     img.src = img.src.split('?')[0] + '?t=' + Date.now();
-    loader.style.display = 'block';
   }
 });
 
