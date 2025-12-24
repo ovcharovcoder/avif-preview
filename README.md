@@ -6,35 +6,34 @@
 
 ![Avif Preview Banner](https://raw.githubusercontent.com/ovcharovcoder/avif-preview/main/images/avif-preview-banner.png)
 
-> **Avif Preview — Preview AVIF images in VS Code with gallery, zoom, and pan.**
+> Avif Preview — Preview AVIF images in VS Code with gallery, zoom, and pan.
 
 ---
 
 ## ✨ Features
 
-- 🖼 AVIF preview — Open .avif files in a webview.
-- 🖼 Gallery support — View multiple images from a folder.
+- 🖼 AVIF Preview — Open .avif files in a webview.
+- 🖼 Gallery Support — View multiple images from a folder.
 - 🔍 Zoom & Pan — Scroll to zoom, drag to pan.
 - 🛠 Toolbar & Controls — Quick zoom, reset, fit, and close.
 - 📊 Metadata — Shows scale, dimensions, and file size.
-- 🛡️ Secure rendering — Safe Webview with theme adaptation and CSP.
+- 🛡️ Secure Rendering — Safe Webview with theme adaptation and CSP.
 
 ---
 
-## 🛠 Installation & Usage
+## 🛠 Installation
 
 1. Open **VS Code → Extensions** (`Ctrl+Shift+X` / `Cmd+Shift+X`).
 2. Search for **Avif Preview** and click Install.
-
-To preview an AVIF file:
-
-- Right-click an .avif file in the Explorer and select **Open AVIF Preview**.
-- You can select a single file, multiple files, or a folder containing multiple files — all selected images will be added to the gallery.
 
 ---
 
 ## 🎨 Usage
 
+To preview an AVIF file:
+
+- Right-click an .avif file in the Explorer and select **Open AVIF Preview**.
+- Select a single AVIF file, multiple files, or a folder — all selected images will be added to the gallery.
 - Scroll with the mouse wheel to zoom in/out.
 - Drag images to pan when zoomed.
 - Use the toolbar buttons for quick actions:
@@ -44,6 +43,15 @@ To preview an AVIF file:
   - Fit Image(s) to Screen
   - Close Preview
 - Metadata panel shows scale, dimensions, and file size.
+
+- **Keyboard Shortcuts** — All toolbar actions can also be controlled via keyboard:
+  - `Ctrl+Alt+V` (Windows) / `Cmd+Alt+V` (Mac) — Open .avif file.
+    These shortcuts work when an AVIF file is selected in the Explorer.
+  - `+` / `=` — Zoom In
+  - `-` — Zoom Out
+  - `0` — Reset Zoom
+  - `f` — Fit Image(s) to Screen
+  - `Escape` — Close Preview
 
 ---
 
