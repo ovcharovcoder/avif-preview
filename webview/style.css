@@ -28,7 +28,7 @@ img {
   max-height: none;
   transform-origin: center center;
   transition: transform 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  cursor: inherit; /* змінюється JS залежно від scale та drag */
+  cursor: inherit;
 }
 
 /* === Toolbar === */
@@ -74,32 +74,7 @@ img {
   white-space: nowrap;
 }
 
-/* === Loader (smooth spinner)=== */
+/* === Loader (hidden)=== */
 #loader {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 5;
-  background: rgba(0, 0, 0, 0.3);
-}
-
-#loader::after {
-  content: '';
-  width: 40px;
-  height: 40px;
-  border: 5px solid rgba(255, 255, 255, 0.3);
-  border-top: 5px solid var(--vscode-editor-foreground);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+  display: none;
 }
