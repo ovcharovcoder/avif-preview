@@ -3,6 +3,10 @@
 All notable changes to the Avif Preview VS Code extension will be documented in this file.
 <br>
 
+## [1.0.3] - 2025-12-24
+### Changed
+- Improved help documentation with clearer explanations.
+
 ## [1.0.2] - 2025-12-23
 ### Added
 
