@@ -3,6 +3,10 @@
 All notable changes to the Avif Preview VS Code extension will be documented in this file.
 <br>
 
+## [1.0.4] - 2025-12-24
+### Changed
+- Disabled the loading spinner icon in the preview panel to simplify the interface.
+
 ## [1.0.3] - 2025-12-24
 ### Changed
 - Improved help documentation with clearer explanations.
