@@ -98,9 +98,11 @@ Released under the [MIT License](https://raw.githubusercontent.com/ovcharovcoder
 
 
 **Install & Build**
-
+1. Download the project
+2. To build, use the following commands:
 `npm install -g @vscode/vsce` <br>
 `vsce package`
+
 
 
 
