@@ -98,8 +98,10 @@ Released under the [MIT License](https://raw.githubusercontent.com/ovcharovcoder
 
 
 **Install & Build**
+
 `npm install -g @vscode/vsce` <br>
 `vsce package`
+
 
 
 
