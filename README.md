@@ -85,3 +85,21 @@ If you enjoy DevFoundry Umber, consider supporting the author:
 ## 🪪 License
 
 Released under the [MIT License](https://raw.githubusercontent.com/ovcharovcoder/avif-preview/main/LICENSE.md)
+
+---
+
+## 🧑‍💻 Development & Build
+
+**Requirements**
+
+- Node.js 18+
+- npm 9+
+- VS Code 1.81+
+
+
+**Install & Build**
+`npm install -g @vscode/vsce` <br>
+`vsce package`
+
+
+
